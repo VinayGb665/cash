@@ -9,7 +9,7 @@ struct {
 	char arguments[MAX_ARG_NB][MAX_ARG_LEN];
 } simple_command_t;
 
-void simple_command();
-void insert_argument(char argument[]);
+simple_command_t simple_command();
+void insert_argument(simple_command_t simple_command, char argument[]);
 
 #endif
