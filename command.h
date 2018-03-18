@@ -4,9 +4,10 @@
 #include "simple_command.h"
 
 #define MAX_FILE_LEN
+#define SIMPLE_COMMAND_NB
 
 struct {
-	simple_command_t simple_command;
+	simple_command_t simple_command[SIMPLE_COMMAND_NB];
 	char out_file[MAX_FILE_LEN];
 	char in_file[MAX_FILE_LEN];
 	char err_file[MAX_FILE_LEN];
