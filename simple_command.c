@@ -1,4 +1,5 @@
 #include "simple_command.h"
+#include "common.h"
 
 void simple_command() {
 	// complete
