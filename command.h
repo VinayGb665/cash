@@ -16,4 +16,11 @@ struct {
 static command_t current_command;
 static simple_command_t current_simple_command;
 
+void prompt();
+void print();
+void execute();
+void clear();
+void command();
+void insert_simple_command(simple_command_t simple_command);
+
 #endif
