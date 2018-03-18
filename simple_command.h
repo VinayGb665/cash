@@ -4,7 +4,7 @@
 #define MAX_ARG_NB 10
 #define MAX_ARG_LEN 10
 
-struct {
+typedef struct {
 	int argument_nb;
 	char arguments[MAX_ARG_NB][MAX_ARG_LEN];
 } simple_command_t;

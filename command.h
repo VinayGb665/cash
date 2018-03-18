@@ -6,7 +6,7 @@
 #define MAX_FILE_LEN
 #define SIMPLE_COMMAND_NB
 
-struct {
+typedef struct {
 	int simple_command_nb;
 	simple_command_t simple_command[SIMPLE_COMMAND_NB];
 	char out_file[MAX_FILE_LEN];
