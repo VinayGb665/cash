@@ -7,6 +7,7 @@
 #define SIMPLE_COMMAND_NB
 
 struct {
+	int simple_command_nb;
 	simple_command_t simple_command[SIMPLE_COMMAND_NB];
 	char out_file[MAX_FILE_LEN];
 	char in_file[MAX_FILE_LEN];
