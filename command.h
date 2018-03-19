@@ -22,7 +22,6 @@ void prompt();
 void print();
 void clear();
 void execute(command_t command);
-command_t command();
 void insert_simple_command(command_t command, simple_command_t simple_command);
 
 #endif
