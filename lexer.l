@@ -1,6 +1,6 @@
 %{
 
-#include <string.h> 
+#include "commomn.h"
 #include "y.tab.h"  
 
 %}  
