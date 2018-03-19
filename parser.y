@@ -6,6 +6,10 @@ void yyerror(const char *);
 
 %}
 
+%union {
+    char *str;
+};
+
 %token LESS GREAT NEWLINE WORD GREATGREAT PIPE AMPERSAND GREATAMPERSAND GREATGREATAMPERSAND
 
 %%      
@@ -41,18 +45,3 @@ command_list : command_list command_line
 
 
 %%
-main()
-{
- return(yyparse());
-}
-
-yyerror(s)
-char *s;
-{
-  fprintf(stderr, "%s\n",s);
-}
-
-yywrap()
-{
-  return(1);
-}

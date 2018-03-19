@@ -1,6 +1,6 @@
 %{
 
-#include "commomn.h"
+#include "common.h"
 #include "y.tab.h"  
 
 %}
@@ -22,8 +22,8 @@
  
 “&”     			{return AMPERSAND;} 
 
-">>&"               {return GREATGREATAMPERSAND}
+">>&"               {return GREATGREATAMPERSAND;}
  
-[^ \t\n][^ \t\n]*   {yylval.string_val = strdup(yytext); return WORD;} 
+[^ \t\n][^ \t\n]*   {yylval.str = strdup(yytext); return WORD;}
   
 %%  
