@@ -4,7 +4,8 @@
 void prompt() {
 	char buf[1024];
 	getcwd(buf, 1024);
-	printf("%s$", buf);
+	struct passwd *p = getpwuid(getuid());
+	printf("\033[92m%s\033[0m:\033[94m%s\033[0m$", p->pw_name, buf);
 }
 
 void print(command_t command) {
