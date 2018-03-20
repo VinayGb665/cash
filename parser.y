@@ -1,9 +1,19 @@
 %{
 
-#include<stdio.h>
+#include "common.h"
+#include "command.h"
+#include "simple_command.h"
 int yylex();
-void yyerror(const char *); 
+void yyerror(const char *);
 
+simple_command_t simple_command;
+extern command_t command;
+
+/* not required i guess, delete later.
+command_list : command_list command_line
+             |
+             ;
+*/
 %}
 
 %union {
@@ -12,16 +22,18 @@ void yyerror(const char *);
 
 %token LESS GREAT NEWLINE WORD GREATGREAT PIPE AMPERSAND GREATAMPERSAND GREATGREATAMPERSAND
 
+%type<str>  WORD
+
 %%      
-goal : command_list
+goal : command_line {printf("success\n"); YYACCEPT;}
      ;            
-arg_list : arg_list WORD
-         | 
+arg_list : arg_list WORD    {insert_argument(&simple_command, $2);}
+         |                  {simple_command_reset(&simple_command);}
          ;
-cmd_and_args : WORD arg_list
+cmd_and_args : WORD arg_list    {insert_argument(&simple_command, $1);}
              ;
-pipe_list : pipe_list PIPE cmd_and_args
-          | cmd_and_args
+pipe_list : pipe_list PIPE cmd_and_args {insert_simple_command(&command, simple_command);}
+          | cmd_and_args {insert_simple_command(&command, simple_command);}
           ;
 io_modifier : GREATGREAT WORD
             | GREAT WORD
@@ -32,16 +44,11 @@ io_modifier : GREATGREAT WORD
 io_modifier_list : io_modifier_list io_modifier
                  | 
                  ;
-background_optional : AMPERSAND
+background_optional : AMPERSAND {command.background = 1;}
                     | 
                     ;
 command_line : pipe_list io_modifier_list background_optional NEWLINE
              | NEWLINE
-             | error NEWLINE{yyerrok;}
              ;
-command_list : command_list command_line
-             |
-             ;
-
 
 %%

@@ -2,22 +2,30 @@
 #include "common.h"
 
 void prompt() {
-	// complete
+	char buf[1024];
+	getcwd(buf, 1024);
+	printf("%s$", buf);
 }
 
-void print() {
-	// complete
+void print(command_t command) {
+	for (int i = 0; i < command.simple_command_nb; ++i) {
+		printf("simple_command(%d): ", i);
+		for (int j = 0; j < command.simple_command[i].argument_nb; ++j) {
+			printf("%s ", command.simple_command[i].arguments[j]);
+		}
+		printf("\n");
+	}
 }
 
-void clear() {
-	// complete
+void command_reset(command_t* command) {
+	command->simple_command_nb = 0;
 }
 
 void execute(command_t command) {
 	pid_t pid = fork();
 	for (int i = 0; i < command.simple_command_nb; ++i) {
 		if (pid == 0) {
-			execvp(command.simple_command[i].arguments[0], command.simple_command[i]);
+			execvp(command.simple_command[i].arguments[0], command.simple_command[i].arguments);
 			perror("execvp");
 			_exit(1);
 		} else if (pid < 0) {
@@ -30,7 +38,7 @@ void execute(command_t command) {
 	}
 }
 
-void insert_simple_command(command_t command, simple_command_t simple_command) {
-	command.simple_command[simple_command_nb] = simple_command;
-	++simple_command_nb;
+void insert_simple_command(command_t* command, simple_command_t simple_command) {
+	command->simple_command[command->simple_command_nb] = simple_command;
+	++command->simple_command_nb;
 }

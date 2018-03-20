@@ -8,7 +8,7 @@
 %%  
 \n 					{return NEWLINE;}
 
-[ \t]   			{} 
+[ \t]   			{;} 
  
 ">"     			{return GREAT;} 
  
@@ -18,11 +18,15 @@
  
 ">&"    			{return GREATAMPERSAND;} 
  
-“|”     			{return PIPE;} 
+"|"     			{return PIPE;} 
  
-“&”     			{return AMPERSAND;} 
+"&"     			{return AMPERSAND;} 
 
 ">>&"               {return GREATGREATAMPERSAND;}
+
+"$"	{
+	return *yytext;
+}
  
 [^ \t\n][^ \t\n]*   {yylval.str = strdup(yytext); return WORD;}
   
