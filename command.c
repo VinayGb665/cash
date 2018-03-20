@@ -22,8 +22,9 @@ void command_reset(command_t* command) {
 }
 
 void execute(command_t command) {
-	pid_t pid = fork();
+	pid_t pid;
 	for (int i = 0; i < command.simple_command_nb; ++i) {
+		pid = fork();
 		if (pid == 0) {
 			execvp(command.simple_command[i].arguments[0], command.simple_command[i].arguments);
 			perror("execvp");
