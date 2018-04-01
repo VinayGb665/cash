@@ -17,12 +17,26 @@ typedef struct {
 	int background;
 } command_t;
 
+typedef struct alias{
+	char org[100];
+	char dup[100];
+	int flag;
+} alias;
+
+typedef struct alias_t
+{
+	alias at[100];
+	
+
+} alias_t;
+
 static command_t current_command;
 static simple_command_t current_simple_command;
-
+static alias_t a_t;
 void prompt();
 void print(command_t command);
 void add_command_to_history(command_t command_t);
+void alias_cmd(char *);
 void print_history();
 void command_reset(command_t* command);
 void execute(command_t command);

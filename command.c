@@ -63,15 +63,76 @@ void add_command_to_history( command_t command )
     history_count++;
 }
 
+
+void alias_cmd(char * command){
+
+	int i,count=0;char *x;
+	char alias[100],cmd[200];
+	 while( (x = strsep(&command,"=")) != NULL ){
+	 	count++;
+       // printf("%s\n",x);	
+        if(count==1){
+        	strcpy(alias,x);
+        }
+        else if(count==2){
+        	strcpy(cmd,x);
+        }
+    }
+    if(count==2){
+    	for(i=0;i<100;i++){
+    		if(a_t.at[i].flag==0){
+    			strcpy(a_t.at[i].org,alias);
+    			strcpy(a_t.at[i].dup,cmd);
+    			a_t.at[i].flag=1;
+    			break;
+    		}
+    	}
+    }
+    else{
+    	printf("Invalid syntax");
+    }
+     for(i=0;i<100;i++){
+     	if(a_t.at[i].flag==0){
+     		break;
+     	}
+     	printf("1%s %s\n",a_t.at[i].dup,a_t.at[i].org);
+     	
+     }
+	/*
+		printf("%s ",strsep(&command,"="));
+	for(i=0;i<strlen(command);i++){
+		if(1==0){
+			strcpy(a_t.at[i].org,alias);
+			//strcpy(a_t->at[i]->org,command);
+		}
+	}
+
+*/
+}
+
+
+
 void command_reset(command_t* command) {
 	command->simple_command_nb = 0;
 }
 
 void execute(command_t command) {
+
+
 	pid_t pid;
 	for (int i = 0; i < command.simple_command_nb; ++i) {
 		pid = fork();
 		if (pid == 0) {
+			for(int j=0;j<100;j++){
+				if(strcmp(a_t.at[j].org,command.simple_command[i].arguments[0])==0){
+					//printf("Atleast came till here \n");
+					execvp(a_t.at[j].dup, command.simple_command[i].arguments);
+					perror("execvp");
+					_exit(1);
+					break;
+
+				}
+			}
 			execvp(command.simple_command[i].arguments[0], command.simple_command[i].arguments);
 			perror("execvp");
 			_exit(1);

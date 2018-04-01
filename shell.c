@@ -10,12 +10,19 @@ int main() {
 		yyparse();
 		print(command);
 		char a[]="hist";
+		if(strcmp("alias",command.simple_command[0].arguments[0])==0){
+			alias_cmd(command.simple_command[0].arguments[1]);
+		}
+		else{
 		if(strcmp(a,command.simple_command[0].arguments[0])==0) {
 			print_history();	
 		}
 		else {
 			add_command_to_history(command);
 			execute(command);
-		}command_reset(&command);
+		}
+	}	
+		command_reset(&command);
 	}
+
 }

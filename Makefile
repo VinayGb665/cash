@@ -12,4 +12,4 @@ parsertest: yacc lex test
 test: lex.yy.c y.tab.c
 	$(COMPILER) lex.yy.c y.tab.c -ly -ll -o cash
 clean:
-	rm cash
+	rm cash lex.yy.c y.tab.c  y.tab.h
