@@ -4,7 +4,9 @@
 #include "simple_command.h"
 
 #define MAX_FILE_LEN 10
-#define SIMPLE_COMMAND_NB 10
+#define SIMPLE_COMMAND_NB 25
+#define HISTORY_MAX_SIZE 25
+
 
 typedef struct {
 	int simple_command_nb;
@@ -20,6 +22,8 @@ static simple_command_t current_simple_command;
 
 void prompt();
 void print(command_t command);
+void add_command_to_history(command_t command_t);
+void print_history();
 void command_reset(command_t* command);
 void execute(command_t command);
 void insert_simple_command(command_t* command, simple_command_t simple_command);
