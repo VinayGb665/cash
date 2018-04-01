@@ -95,7 +95,7 @@ void alias_cmd(char * command){
      	if(a_t.at[i].flag==0){
      		break;
      	}
-     	printf("1%s %s\n",a_t.at[i].dup,a_t.at[i].org);
+     //	printf("1%s %s\n",a_t.at[i].dup,a_t.at[i].org);
      	
      }
 	/*
