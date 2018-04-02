@@ -18,6 +18,51 @@ void print(command_t command) {
 	}
 }
 
+void print_history() {
+	
+	for (int i = history_count-1; i >= 0; i--) {
+		int j=0;
+		while(history[i][j]!=NULL){
+			printf("%s ",history[i][j]);
+			j++;
+		}
+	}
+}
+
+void add_command_to_history( command_t command )
+{
+  	if (history_count < HISTORY_MAX_SIZE) {
+     	for (int j = 0; j < command.simple_command[0].argument_nb; ++j) {
+     			history[history_count][j]=strdup(command.simple_command[0].arguments[j]);
+     	}
+     	time_t ltime; 
+    	ltime=time(NULL); 
+    	char * t = asctime(localtime(&ltime));
+
+     	history[history_count][command.simple_command[0].argument_nb]=strdup(t);
+	} 
+  	else {
+  		for (int index = 1; index < HISTORY_MAX_SIZE; index++) {
+  			int j = 0;
+  			
+  			while(history[index-1][j]!=NULL) {
+  				history[index-1][j]=strdup(history[index][j]);
+ 	        	j++;
+ 	        }
+ 	        
+  	 	}
+        for (int j = 0; j < command.simple_command[0].argument_nb; ++j) {
+		 	history[HISTORY_MAX_SIZE][j]=strdup(command.simple_command[0].arguments[j]);
+		}
+		time_t ltime; 
+    	ltime=time(NULL); 
+    	char * t = asctime(localtime(&ltime));
+
+     	history[HISTORY_MAX_SIZE][command.simple_command[0].argument_nb]=strdup(t);
+  	}
+    history_count++;
+}
+
 void command_reset(command_t* command) {
 	command->simple_command_nb = 0;
 }
