@@ -9,7 +9,14 @@
 #include <sys/wait.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <pwd.h>
 #include <fcntl.h>
+
+#define HISTORY_MAX_SIZE 25
+#define MAX_ARG 6
+
+char * history[HISTORY_MAX_SIZE][MAX_ARG];
+static int history_count;
 
 #endif
