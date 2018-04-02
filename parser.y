@@ -35,11 +35,11 @@ cmd_and_args : WORD arg_list    {insert_argument(&simple_command, $1);}
 pipe_list : pipe_list PIPE cmd_and_args {insert_simple_command(&command, simple_command);}
           | cmd_and_args {insert_simple_command(&command, simple_command);}
           ;
-io_modifier : GREATGREAT WORD
-            | GREAT WORD
-            | GREATGREATAMPERSAND WORD
-            | GREATAMPERSAND WORD
-            | LESS WORD
+io_modifier : GREATGREAT WORD   {strcpy(command.out_file, $2);}
+            | GREAT WORD    {strcpy(command.out_file, $2);}
+            | GREATGREATAMPERSAND WORD  {strcpy(command.out_file, $2);}
+            | GREATAMPERSAND WORD   {strcpy(command.out_file, $2);}
+            | LESS WORD {strcpy(command.in_file, $2);}
             ;
 io_modifier_list : io_modifier_list io_modifier
                  | 
