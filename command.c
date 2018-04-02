@@ -31,48 +31,34 @@ void print_history() {
 
 void add_command_to_history( command_t command )
 {
-  	char pipe[] = "|";
   	if (history_count < HISTORY_MAX_SIZE) {
-  		int k=0;
-     	for ( int i = 0; i < command.simple_command_nb; i++) {
-     		for (int j = 0; j < command.simple_command[i].argument_nb; ++j) {
-     			history[history_count][k]=strdup(command.simple_command[i].arguments[j]);
-     			k++;
-     		}
-			history[history_count][k]=strdup(pipe);
-			k++;     		
+     	for (int j = 0; j < command.simple_command[0].argument_nb; ++j) {
+     			history[history_count][j]=strdup(command.simple_command[0].arguments[j]);
      	}
      	time_t ltime; 
     	ltime=time(NULL); 
     	char * t = asctime(localtime(&ltime));
 
-     	history[history_count][k-1]=strdup(t);
+     	history[history_count][command.simple_command[0].argument_nb]=strdup(t);
 	} 
   	else {
   		for (int index = 1; index < HISTORY_MAX_SIZE; index++) {
   			int j = 0;
   			
-  			while(history[index][j]!=NULL) {
+  			while(history[index-1][j]!=NULL) {
   				history[index-1][j]=strdup(history[index][j]);
  	        	j++;
  	        }
  	        
   	 	}
-        int k=0;
-     	for ( int i = 0; i < command.simple_command_nb; i++) {
-     		for (int j = 0; j < command.simple_command[i].argument_nb; ++j) {
-     			history[history_count][k]=strdup(command.simple_command[i].arguments[j]);
-     			k++;
-     		}
-			history[history_count][k]=strdup(pipe);
-			k++;     		
-     	}
-
+        for (int j = 0; j < command.simple_command[0].argument_nb; ++j) {
+		 	history[HISTORY_MAX_SIZE][j]=strdup(command.simple_command[0].arguments[j]);
+		}
 		time_t ltime; 
     	ltime=time(NULL); 
     	char * t = asctime(localtime(&ltime));
 
-     	history[HISTORY_MAX_SIZE][k]=strdup(t);
+     	history[HISTORY_MAX_SIZE][command.simple_command[0].argument_nb]=strdup(t);
   	}
     history_count++;
 }
