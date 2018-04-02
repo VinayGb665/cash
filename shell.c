@@ -16,6 +16,7 @@ int main() {
 		else {
 			add_command_to_history(command);
 			execute(command);
-		}command_reset(&command);
+		}
+		command_reset(&command);
 	}
 }
