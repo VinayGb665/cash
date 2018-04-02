@@ -119,26 +119,32 @@ void command_reset(command_t* command) {
 void execute(command_t command) {
 
 
-	pid_t pid;
+		pid_t pid;
 	for (int i = 0; i < command.simple_command_nb; ++i) {
 		pid = fork();
 		if (pid == 0) {
-			for(int j=0;j<100;j++){
-				if(strcmp(a_t.at[j].org,command.simple_command[i].arguments[0])==0){
-					//printf("Atleast came till here \n");
-					execvp(a_t.at[j].dup, command.simple_command[i].arguments);
-					perror("execvp");
-					_exit(1);
-					break;
-
-				}
-			}
 			execvp(command.simple_command[i].arguments[0], command.simple_command[i].arguments);
-			perror("execvp");
-			_exit(1);
+			//perror("execvp");
+			
+			
+  		     
+				exit(1);
+			
 		} else if (pid < 0) {
+			 
 			perror("fork");
 			return;
+		}
+		else{
+			int status;
+  		     wait(&status); 
+  		      if(WIFEXITED(status)==1){
+  		      	if(strcmp(command.simple_command[i].arguments[0],"cd")==0){
+  		      		chdir(command.simple_command[i].arguments[1]);
+  		      	}
+  		      	
+  		      	
+  		      }  
 		}
 	}
 	if (!command.background) {
