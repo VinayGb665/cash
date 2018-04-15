@@ -1,6 +1,7 @@
 #include "command.h"
 #include "common.h"
 
+
 void prompt() {
 	char buf[1024];
 	getcwd(buf, 1024);
@@ -26,11 +27,21 @@ void print_history() {
 			printf("%s ",history[i][j]);
 			j++;
 		}
+		printf("%d\n",PID[i]);
 	}
+
 }
 
 void add_command_to_history( command_t command )
 {
+	for (int i = 0; i < command.simple_command_nb; ++i) {
+		for (int j = 1, k = command.simple_command[i].argument_nb - 1; j < k; ++j, --k) {
+			char tmp_arg[MAX_ARG_LEN];
+			strcpy(tmp_arg, command.simple_command[i].arguments[j]);
+			strcpy(command.simple_command[i].arguments[j], command.simple_command[i].arguments[k]);
+			strcpy(command.simple_command[i].arguments[k], tmp_arg);
+		}
+	}
   	char pipe[] = "|";
   	if (history_count < HISTORY_MAX_SIZE) {
   		int k=0;
@@ -39,14 +50,17 @@ void add_command_to_history( command_t command )
 	     			history[history_count][k]=strdup(command.simple_command[i].arguments[j]);
 	     			k++;
 	     		}
+	     		//printf("fts jf %d\n", command.simple_command[0].pid);
 			history[history_count][k]=strdup(pipe);
 			k++;     		
 	     	}
 	     	time_t ltime; 
 	    	ltime=time(NULL); 
 	    	char * t = asctime(localtime(&ltime));
-
+	    	t[strlen(t)-1]='\0';	
 	     	history[history_count][k-1]=strdup(t);
+	     	
+	     	//history[history_count][k]=command.simple_command[0].pid;
 	} 
   	else {
   		for (int index = 1; index < HISTORY_MAX_SIZE; index++) {
@@ -68,6 +82,7 @@ void add_command_to_history( command_t command )
 		time_t ltime; 
 	    	ltime=time(NULL); 
 	    	char * t = asctime(localtime(&ltime));
+	    	t[strlen(t)-1]='\0';
 	     	history[HISTORY_MAX_SIZE][k-1]=strdup(t);
   	}
 	history_count++;
@@ -178,8 +193,9 @@ void execute(command_t command) {
 		pid = fork();
 		if (pid == 0) {
 			execvp(command.simple_command[i].arguments[0], command.simple_command[i].arguments);
-			// perror("execvp");
+			//perror("execvp");
 			_exit(1);
+			
 			
 		} else if (pid < 0) {
 			 
@@ -187,6 +203,8 @@ void execute(command_t command) {
 			_exit(1);
 		}
 		else{
+			PID[pid_count++]=pid;
+			//printf("%d %d\n",PID[c-1],c-1);
 			int status;
   		     	wait(&status); 
   		      	if(WIFEXITED(status)==1){
