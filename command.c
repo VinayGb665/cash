@@ -144,14 +144,14 @@ void command_reset(command_t* command) {
 void execute(command_t command) {
 
 	//reverse
-	for (int i = 0; i < command.simple_command_nb; ++i) {
-		for (int j = 1, k = command.simple_command[i].argument_nb - 1; j < k; ++j, --k) {
-			char tmp_arg[MAX_ARG_LEN];
-			strcpy(tmp_arg, command.simple_command[i].arguments[j]);
-			strcpy(command.simple_command[i].arguments[j], command.simple_command[i].arguments[k]);
-			strcpy(command.simple_command[i].arguments[k], tmp_arg);
-		}
-	}
+/*	for (int i = 0; i < command.simple_command_nb; ++i) {*/
+/*		for (int j = 1, k = command.simple_command[i].argument_nb - 1; j < k; ++j, --k) {*/
+/*			char tmp_arg[MAX_ARG_LEN];*/
+/*			strcpy(tmp_arg, command.simple_command[i].arguments[j]);*/
+/*			strcpy(command.simple_command[i].arguments[j], command.simple_command[i].arguments[k]);*/
+/*			strcpy(command.simple_command[i].arguments[k], tmp_arg);*/
+/*		}*/
+/*	}*/
 
 	int tmpin = dup(0);
 	int tmpout = dup(1);
