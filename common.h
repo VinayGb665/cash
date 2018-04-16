@@ -12,11 +12,17 @@
 #include <time.h>
 #include <pwd.h>
 #include <fcntl.h>
+#include <termios.h>
 
 #define HISTORY_MAX_SIZE 25
 #define MAX_ARG 6
 
+void disableRawMode();
+void enableRawMode();
+int up_arrow();
+struct termios orig_termios;
+
 char * history[HISTORY_MAX_SIZE][MAX_ARG];
-static int history_count;
+int history_count;
 
 #endif
