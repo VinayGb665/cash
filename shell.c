@@ -78,6 +78,7 @@ int main(int argc, char *argv[]) {
 		}
 		if (yyparse()) {
 			printf("command not recognized\n");
+			continue;
 		}
 		
 		// print(command);

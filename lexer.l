@@ -3,31 +3,36 @@
 #include "common.h"
 #include "y.tab.h"  
 
+int bs_flag = 0;
+
 %}
 
 %%  
-\n 				{return NEWLINE;}
+\n 				{ if (bs_flag) {bs_flag = 0;}  else {return NEWLINE;}}
 
 [ \t]   			{;} 
  
-">"     			{return GREAT;} 
+">"     			{bs_flag = 0; return GREAT;} 
  
-"<"     			{return LESS;} 
+"<"     			{bs_flag = 0; return LESS;} 
  
-">>"    			{return GREATGREAT;} 
+">>"    			{bs_flag = 0; return GREATGREAT;} 
  
-">&"    			{return GREATAMPERSAND;} 
+">&"    			{bs_flag = 0; return GREATAMPERSAND;} 
  
-"|"     			{return PIPE;} 
+"|"     			{bs_flag = 0; return PIPE;} 
  
-"&"     			{return AMPERSAND;} 
+"&"     			{bs_flag = 0; return AMPERSAND;} 
 
-">>&"               		{return GREATGREATAMPERSAND;}
+">>&"               		{bs_flag = 0; return GREATGREATAMPERSAND;}
 
 "$"	{
+	bs_flag = 0;
 	return *yytext;
 }
+
+"\\"				{bs_flag = 1;}
  
-[^ \t\n][^ \t\n]*   {yylval.str = strdup(yytext); return WORD;}
+[^ \t\n][^ \t\n]*   {bs_flag = 0; yylval.str = strdup(yytext); return WORD;}
   
 %%  
