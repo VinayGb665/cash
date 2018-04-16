@@ -6,7 +6,7 @@
 %}
 
 %%  
-\n 					{return NEWLINE;}
+\n 				{return NEWLINE;}
 
 [ \t]   			{;} 
  
@@ -22,7 +22,7 @@
  
 "&"     			{return AMPERSAND;} 
 
-">>&"               {return GREATGREATAMPERSAND;}
+">>&"               		{return GREATGREATAMPERSAND;}
 
 "$"	{
 	return *yytext;

@@ -120,8 +120,6 @@ void alias_cmd(char * command){
 */
 }
 
-
-
 void command_reset(command_t* command) {
 	command->simple_command_nb = 0;
 	command->in_file[0] = '\0';
@@ -130,6 +128,8 @@ void command_reset(command_t* command) {
 }
 
 void execute(command_t command) {
+
+	//reverse
 	for (int i = 0; i < command.simple_command_nb; ++i) {
 		for (int j = 1, k = command.simple_command[i].argument_nb - 1; j < k; ++j, --k) {
 			char tmp_arg[MAX_ARG_LEN];
@@ -173,27 +173,30 @@ void execute(command_t command) {
 
 		dup2(fdout, 1);
 		close(fdout);
+		
+		if (!strcmp(command.simple_command[i].arguments[0], "env")) {
+			print_env();
+			continue;
+		} else if(strcmp(command.simple_command[i].arguments[0], "cd") == 0) {
+  		      	chdir(command.simple_command[i].arguments[1]);
+		}
 
 		// fork and execute
 		pid = fork();
 		if (pid == 0) {
 			execvp(command.simple_command[i].arguments[0], command.simple_command[i].arguments);
-			// perror("execvp");
+			perror("execvp");
 			_exit(1);
-			
 		} else if (pid < 0) {
-			 
 			perror("fork");
 			_exit(1);
 		}
 		else{
-			int status;
-  		     	wait(&status); 
-  		      	if(WIFEXITED(status)==1){
-  		      		if(strcmp(command.simple_command[i].arguments[0],"cd")==0){
-  		      			chdir(command.simple_command[i].arguments[1]);
-  		      		}
-  		      	}  
+/*			int status;*/
+/*  		     	wait(&status); */
+/*  		      	if(WIFEXITED(status)==1){*/
+/*  		      		*/
+/*  		      	}*/
 		}
 	}
 	if (!command.background) {
@@ -209,4 +212,12 @@ void execute(command_t command) {
 void insert_simple_command(command_t* command, simple_command_t simple_command) {
 	command->simple_command[command->simple_command_nb] = simple_command;
 	++command->simple_command_nb;
+}
+
+void print_env() {
+	printf("$HOME=%s\n", getenv("HOME"));
+	char buf[1005]; getcwd(buf, 1000);
+	printf("$CWD=%s\n", buf);
+	printf("$PATH=/bin\n");
+	printf("$SHELL=/bin/cash\n");
 }

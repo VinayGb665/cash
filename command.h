@@ -41,5 +41,6 @@ void print_history();
 void command_reset(command_t* command);
 void execute(command_t command);
 void insert_simple_command(command_t* command, simple_command_t simple_command);
+void print_env();
 
 #endif

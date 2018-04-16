@@ -25,7 +25,7 @@ command_list : command_list command_line
 %type<str>  WORD
 
 %%      
-goal : command_line {printf("success\n"); YYACCEPT;}
+goal : command_line {YYACCEPT;}
      ;            
 arg_list : arg_list WORD    {insert_argument(&simple_command, $2);}
          |                  {simple_command_reset(&simple_command);}
