@@ -29,28 +29,68 @@ int up_arrow() {
 	c = getc(stdin);
 	
 	if(c == 27) {
+		int counter = 0;
 		c = getc(stdin);
 		c = getc(stdin);
-		// DEB(history_count);
-		if(c == 65) {
-			flag = 1;
-			disableRawMode();
-			int j = 0;
-			int idx = 0;
-			while(history[history_count-1][j+1] != NULL) {
-				printf("%s ",history[history_count-1][j]);
-				idx = j;
-				j++;
+		if(c == 65)
+			counter = 1;
+		
+		int j = 0;
+		int idx = 0;
+		int length = 0;
+		while(history[history_count - counter][j+1] != NULL) {
+			printf("%s ",history[history_count - counter][j]);
+			length += strlen(history[history_count - counter][j]);
+			length++;
+			idx = j;
+			j++;
 
-			}
-			for (int i = idx; i > -1; i--) {
-				for (int j = strlen(history[history_count-1][i]) - 1; j > -1; j-- ) {
-					ungetc(history[history_count-1][i][j], stdin);
+		}
+
+		for (int i = 0; i < MAX_COMMAND_LEN - length; ++i)
+			printf(" ");
+		for (int i = 0; i < MAX_COMMAND_LEN - length; ++i)
+			printf("\b");
+
+
+		while((c=getc(stdin))!='\n') {
+			if(c == 27) {
+				c = getc(stdin);
+				c = getc(stdin);
+				if(c == 65 && counter < history_count)
+					counter++;
+				
+				for (int i = 0; i < length; ++i)
+					printf("\b");
+				
+				length = 0;	
+				j = 0;
+				idx = 0;		
+				while(history[history_count - counter][j+1] != NULL) {
+					printf("%s ",history[history_count - counter][j]);
+					length += strlen(history[history_count - counter][j]);
+					length++;
+					idx = j;
+					j++;
 				}
-				ungetc(' ',stdin);
+
+				for (int i = 0; i < MAX_COMMAND_LEN - length; ++i)
+					printf(" ");
+				for (int i = 0; i < MAX_COMMAND_LEN - length; ++i)
+					printf("\b");
 			}
 		}
+
+		flag = 1;
+		disableRawMode();
+		for (int i = idx; i > -1; i--) {
+			for (int j = strlen(history[history_count - counter][i]) - 1; j > -1; j-- ) {
+				ungetc(history[history_count - counter][i][j], stdin);
+			}
+			ungetc(' ',stdin);
+		}
 	}
+	
 
 	else {
 		ungetc(c,stdin);
