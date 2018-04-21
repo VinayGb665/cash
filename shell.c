@@ -120,19 +120,25 @@ int main(int argc, char *argv[]) {
 			printf("command not recognized\n");
 			continue;
 		}
-		
-		// print(command);
-		
-		if(strcmp("alias",command.simple_command[0].arguments[0]) == 0){
+				
+		if(strcmp("alias", command.simple_command[0].arguments[0]) == 0){
 			alias_cmd(command.simple_command[0].arguments[1]);
 		}
-		else if(strcmp("hist",command.simple_command[0].arguments[0]) == 0) {
+		else if(strcmp("hist", command.simple_command[0].arguments[0]) == 0) {
 			print_history();
+		} else if (strcmp("calc", command.simple_command[0].arguments[0]) == 0) {
+			pid_t pid = fork();
+			if (pid == 0) {
+				execl("./calc/calc", "calc", (char*) NULL);
+			} else if (pid > 0) {
+				int status;
+				wait(&status);
+			}
 		}
 		else {
-			add_command_to_history(command);
 			execute(command);
 		}
+		add_command_to_history(command);
 		command_reset(&command);
 	}
 }
