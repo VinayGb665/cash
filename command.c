@@ -130,6 +130,15 @@ void command_reset(command_t* command) {
 
 void execute(command_t command) {
 
+
+	for(int j=0;j<10;j++){
+			if(strcmp(command.simple_command[0].arguments[0],a_t.at[j].dup)){
+					strcpy(command.simple_command[0].arguments[0],a_t.at[j].dup);
+					break;
+			}
+		
+	}
+
 	int tmpin = dup(0);
 	int tmpout = dup(1);
 
