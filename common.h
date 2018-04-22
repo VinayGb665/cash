@@ -13,9 +13,11 @@
 #include <pwd.h>
 #include <fcntl.h>
 #include <termios.h>
+#include <regex.h>
+#include <dirent.h>
 
 #define HISTORY_MAX_SIZE 25
-#define MAX_ARG 6
+#define MAX_ARG 20
 #define MAX_COMMAND_LEN 20
 
 

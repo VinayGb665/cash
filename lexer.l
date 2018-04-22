@@ -33,6 +33,6 @@ int bs_flag = 0;
 
 "\\"				{bs_flag = 1;}
  
-[^ \t\n][^ \t\n]*   {bs_flag = 0; yylval.str = strdup(yytext); return WORD;}
+[^ \t\n][^ \t\n]*   		{bs_flag = 0; yylval.str = strdup(yytext); return WORD;}
   
 %%  

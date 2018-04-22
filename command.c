@@ -21,9 +21,10 @@ void print(command_t command) {
 void print_history() {
 	
 	for (int i = history_count-1; i >= 0; i--) {
+		// printf("hc: %d", i);
 		int j=0;
-		while(history[i][j]!=NULL){
-			printf("%s ",history[i][j]);
+		while(history[i][j] != NULL){
+			printf("%s ", history[i][j]);
 			j++;
 		}
 		printf("%d\n",PID[i]);
@@ -33,14 +34,14 @@ void print_history() {
 
 void add_command_to_history( command_t command )
 {
-	for (int i = 0; i < command.simple_command_nb; ++i) {
-		for (int j = 1, k = command.simple_command[i].argument_nb - 1; j < k; ++j, --k) {
-			char tmp_arg[MAX_ARG_LEN];
-			strcpy(tmp_arg, command.simple_command[i].arguments[j]);
-			strcpy(command.simple_command[i].arguments[j], command.simple_command[i].arguments[k]);
-			strcpy(command.simple_command[i].arguments[k], tmp_arg);
-		}
-	}
+/*	for (int i = 0; i < command.simple_command_nb; ++i) {*/
+/*		for (int j = 1, k = command.simple_command[i].argument_nb - 1; j < k; ++j, --k) {*/
+/*			char tmp_arg[MAX_ARG_LEN];*/
+/*			strcpy(tmp_arg, command.simple_command[i].arguments[j]);*/
+/*			strcpy(command.simple_command[i].arguments[j], command.simple_command[i].arguments[k]);*/
+/*			strcpy(command.simple_command[i].arguments[k], tmp_arg);*/
+/*		}*/
+/*	}*/
   	char pipe[] = "|";
   	if (history_count < HISTORY_MAX_SIZE) {
   		int k=0;
@@ -49,7 +50,6 @@ void add_command_to_history( command_t command )
 	     			history[history_count][k]=strdup(command.simple_command[i].arguments[j]);
 	     			k++;
 	     		}
-	     		//printf("fts jf %d\n", command.simple_command[0].pid);
 			history[history_count][k]=strdup(pipe);
 			k++;     		
 	     	}
@@ -58,8 +58,6 @@ void add_command_to_history( command_t command )
 	    	char * t = asctime(localtime(&ltime));
 	    	t[strlen(t)-1]='\0';	
 	     	history[history_count][k-1]=strdup(t);
-	     	
-	     	//history[history_count][k]=command.simple_command[0].pid;
 	} 
   	else {
   		for (int index = 1; index < HISTORY_MAX_SIZE; index++) {
@@ -144,14 +142,6 @@ void command_reset(command_t* command) {
 void execute(command_t command) {
 
 	//reverse
-/*	for (int i = 0; i < command.simple_command_nb; ++i) {*/
-/*		for (int j = 1, k = command.simple_command[i].argument_nb - 1; j < k; ++j, --k) {*/
-/*			char tmp_arg[MAX_ARG_LEN];*/
-/*			strcpy(tmp_arg, command.simple_command[i].arguments[j]);*/
-/*			strcpy(command.simple_command[i].arguments[j], command.simple_command[i].arguments[k]);*/
-/*			strcpy(command.simple_command[i].arguments[k], tmp_arg);*/
-/*		}*/
-/*	}*/
 
 	int tmpin = dup(0);
 	int tmpout = dup(1);
@@ -171,7 +161,7 @@ void execute(command_t command) {
 		// last command
 		if (i == command.simple_command_nb - 1) {
 			if (strlen(command.out_file)) {
-				fdout = open(command.out_file, O_WRONLY | O_CREAT);
+				fdout = open(command.out_file, O_WRONLY | O_CREAT, S_IRWXU);
 			} else {
 				fdout = dup(tmpout);
 			}
