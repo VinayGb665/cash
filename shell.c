@@ -120,13 +120,21 @@ int main(int argc, char *argv[]) {
 			printf("command not recognized\n");
 			continue;
 		}
-				
+		for (int i = 0; i < command.simple_command_nb; ++i) {
+			for (int j = 1, k = command.simple_command[i].argument_nb - 1; j < k; ++j, --k) {
+				char tmp_arg[MAX_ARG_LEN];
+				strcpy(tmp_arg, command.simple_command[i].arguments[j]);
+				strcpy(command.simple_command[i].arguments[j], command.simple_command[i].arguments[k]);
+				strcpy(command.simple_command[i].arguments[k], tmp_arg);
+			}
+		}		
 		if(strcmp("alias", command.simple_command[0].arguments[0]) == 0){
 			alias_cmd(command.simple_command[0].arguments[1]);
 		}
 		else if(strcmp("hist", command.simple_command[0].arguments[0]) == 0) {
 			print_history();
-		} else if (strcmp("calc", command.simple_command[0].arguments[0]) == 0) {
+		} 
+		else if (strcmp("calc", command.simple_command[0].arguments[0]) == 0) {
 			pid_t pid = fork();
 			if (pid == 0) {
 				execl("./calc/calc", "calc", (char*) NULL);
@@ -134,6 +142,13 @@ int main(int argc, char *argv[]) {
 				int status;
 				wait(&status);
 			}
+		}
+		else if (strcmp("tac", command.simple_command[0].arguments[0]) == 0) {
+			//printf("%s\n",command.simple_command[0].arguments[1] );
+			tac(command.simple_command[0].arguments[1]);
+		}
+		else if (strcmp("exit", command.simple_command[0].arguments[0]) == 0) {
+			exit(0);
 		}
 		else {
 			execute(command);
