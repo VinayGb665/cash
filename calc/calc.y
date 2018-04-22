@@ -15,14 +15,14 @@
 A : S
   | A S
   ;
-S : E '\n'	{printf("%d\n", $1);}
+S : E '\n'		{printf("%d\n", $1);}
   | ID '=' E '\n'	{val[$1] = $3;}
   ;
-E : E '+' E 	{$$ = $1 + $3;}
-  | E '-' E 	{$$ = $1 - $3;}
-  | E '*' E 	{$$ = $1 * $3;}
-  | E '/' E 	{$$ = $1 / $3;}
-  | '(' E ')' 	{$$ = $2;}
+E : E '+' E 		{$$ = $1 + $3;}
+  | E '-' E 		{$$ = $1 - $3;}
+  | E '*' E 		{$$ = $1 * $3;}
+  | E '/' E 		{$$ = $1 / $3;}
+  | '(' E ')' 		{$$ = $2;}
   | ID			{$$ = val[$1];}
   | NUM 		{$$ = $1;}
   ;
@@ -35,7 +35,5 @@ void yyerror(const char *msg) {
 int main() {
 	if (!yyparse()) {
 		// printf("successful\n");
-	} else {
-		printf("incorrect syntax\n");
 	}
 }
