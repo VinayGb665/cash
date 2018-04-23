@@ -9,7 +9,6 @@ yacc : parser.y
 build: $(FILESYSTEM_FILES) $(HEADER_FILES)
 	$(COMPILER) $(FILESYSTEM_FILES) -ly -ll -o cash
 	make -C calc
-	mv cash /bin/cash
 parsertest: yacc lex test
 test: lex.yy.c y.tab.c
 	$(COMPILER) lex.yy.c y.tab.c -ly -ll -o cash

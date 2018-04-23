@@ -133,8 +133,9 @@ void execute(command_t command) {
 
 
 	for(int j=0;j<10;j++){
-			if(strcmp(command.simple_command[0].arguments[0],a_t.at[j].dup)){
+			if(strcmp(command.simple_command[0].arguments[0],a_t.at[j].org)==0){
 					strcpy(command.simple_command[0].arguments[0],a_t.at[j].dup);
+//					printf("HErt %s ",a_t.at[j].dup);
 					break;
 			}
 		
