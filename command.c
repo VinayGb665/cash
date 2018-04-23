@@ -159,7 +159,7 @@ void execute(command_t command) {
 		// last command
 		if (i == command.simple_command_nb - 1) {
 			if (strlen(command.out_file)) {
-				fdout = open(command.out_file, O_WRONLY | O_CREAT , S_IRWXU);
+				fdout = open(command.out_file, O_WRONLY | O_CREAT | O_TRUNC, S_IRWXU);
 			} else {
 				fdout = dup(tmpout);
 			}
@@ -181,6 +181,7 @@ void execute(command_t command) {
 			continue;
 		} else if(strcmp(command.simple_command[i].arguments[0], "cd") == 0) {
   		      	chdir(command.simple_command[i].arguments[1]);
+  		      	continue;
 		}
 
 		// fork and execute
